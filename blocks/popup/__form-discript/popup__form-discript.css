@@ -1,0 +1,9 @@
+.popup__form-discript {
+  padding: 0;
+  margin: 0 auto;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

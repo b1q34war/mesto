@@ -1,0 +1,33 @@
+.form__button {
+  min-width: 358px;
+  min-height: 50px;
+  border: none;
+  background-color: #000;
+  border-radius: 2px;
+  color: #fff;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  padding: 0;
+  margin: 0 auto 37px;
+  cursor: pointer;
+  align-self: center;
+}
+
+@media screen and (max-width: 767px) {
+  .form__button {
+    min-width: 238px;
+    font-size: 14px;
+    line-height: 17px;
+    min-height: 46px;
+    margin: 0 auto 25px;
+  }
+}  
+
+.form__button:hover {
+  background: #000000;
+  opacity: 0.8;
+  border-radius: 2px;
+}
