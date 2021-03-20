@@ -1,0 +1,15 @@
+.gallery__like-button {
+  width: 22px;
+  height: 19px;
+  background-image: url(../../../images/like.svg);
+  border: none;
+  background-color: unset;
+  margin: 0;
+  padding: 0;
+  cursor:pointer;
+  background-repeat: no-repeat;
+}
+
+.gallery__like-button:hover {
+  opacity: .5;
+}
