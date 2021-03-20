@@ -1,0 +1,27 @@
+.profile {
+  display: grid;
+  grid-template-columns: 150px fit-content(100%) 1fr 150px;
+  grid-template-rows: 1fr 1fr;
+  margin: 40px 200px 50px;
+}
+
+
+@media screen and (max-width: 1279px) {
+  .profile  {
+    margin: 40px 100px 50px;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .profile  {
+    margin: 40px 50px 50px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .profile {
+    margin: 42px 19px 36px;
+    grid-template-columns: minmax(28px, 1fr) fit-content(100%) 1fr;
+    grid-template-rows: fit-content(100%) fit-content(100%) fit-content(100%);
+  }
+}  
