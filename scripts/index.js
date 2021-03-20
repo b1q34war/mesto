@@ -14,7 +14,7 @@ let formName = document.querySelector('.popup__form-name');
 let formJob = document.querySelector('.popup__form-about');
 
 // Выберем кнопку сохрарнения
-let saveButton = document.querySelector('.form__button');
+let saveButton = document.querySelector('.popup__form-button');
 
 // Выберем "форму"
 let formElement = document.querySelector('.popup__form');
