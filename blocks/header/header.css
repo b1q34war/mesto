@@ -19,6 +19,5 @@
 @media screen and (max-width: 767px) {
   .header {
     margin: 0 auto;
-    min-height: calc(56px + 27px);
   }
 } 

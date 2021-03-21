@@ -10,6 +10,7 @@
   cursor: pointer;
   background-repeat: no-repeat;
   align-self: flex-end;
+  transition: 0.3s;
 }
 
 

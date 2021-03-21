@@ -8,6 +8,7 @@
   padding: 0;
   cursor:pointer;
   background-repeat: no-repeat;
+  transition: 0.3s;
 }
 
 .gallery__like-button:hover {

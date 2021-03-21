@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mesto</title>
+    <title>Место</title>
     <link rel="stylesheet" href="pages/index.css">
-    <script src="scripts/index.js" defer></script>
 </head>
 <body class="page">
   <div class="page__cover">
@@ -15,53 +14,53 @@
     <main class="content">
       <section class="profile">
         <img class="profile__avatar" src="images/avatar.jpg" alt="Аватар">
-        <h2 class="profile__name">Жак-Ив Кусто</h2> 
-        <button class="profile__edit-button"></button>
+        <h1 class="profile__name">Жак-Ив Кусто</h1> 
+        <button class="profile__edit-button" aria-label="edit-profile"></button>
         <p class="profile__discript">Исследователь океана</p>
-        <button class="profile__add-button"></button>
+        <button class="profile__add-button" aria-label="add-foto"></button>
       </section>
       <section class="gallery">
         <ul class="gallery__cards">
           <li class="gallery__card">
             <img class="gallery__photo" src="images/Карачаевск.png" alt="Гора Эльбрус">
             <div class="gallery__discript">
-              <p class="gallery__text">Карачаевск</p>
-              <button class="gallery__like-button"></button>
+              <h2 class="gallery__text">Карачаевск</h2>
+              <button class="gallery__like-button" aria-label="like"></button>
             </div>
           </li>
           <li class="gallery__card">
             <img class="gallery__photo" src="images/ГораЭльбрус.png" alt="Гора Эльбрус">
             <div class="gallery__discript">
-              <p class="gallery__text">Гора Эльбрус</p>
-              <button class="gallery__like-button"></button>
-            </div>
-          </li>
-          <li class="gallery__card">
-            <img class="gallery__photo" src="images/Домбай.png" alt="Гора Эльбрус">
-            <div class="gallery__discript">
-              <p class="gallery__text">Домбай</p>
-              <button class="gallery__like-button"></button>
+              <h2 class="gallery__text">Гора Эльбрус</h2>
+              <button class="gallery__like-button" aria-label="like"></button>
             </div>
           </li>
           <li class="gallery__card">
             <img class="gallery__photo" src="images/ГораЭльбрус.png" alt="Гора Эльбрус">
             <div class="gallery__discript">
-              <p class="gallery__text">Гора Эльбрус</p>
-              <button class="gallery__like-button"></button>
+              <h2 class="gallery__text">Домбай</h2>
+              <button class="gallery__like-button" aria-label="like"></button>
             </div>
           </li>
           <li class="gallery__card">
-            <img class="gallery__photo" src="images/Домбай.png" alt="Гора Эльбрус">
+            <img class="gallery__photo" src="images/ГораЭльбрус.png" alt="Гора Эльбрус">
             <div class="gallery__discript">
-              <p class="gallery__text">Домбай</p>
-              <button class="gallery__like-button"></button>
+              <h2 class="gallery__text">Гора Эльбрус</h2>
+              <button class="gallery__like-button" aria-label="like"></button>
+            </div>
+          </li>
+          <li class="gallery__card">
+            <img class="gallery__photo" src="images/ГораЭльбрус.png" alt="Гора Эльбрус">
+            <div class="gallery__discript">
+              <h2 class="gallery__text">Домбай</h2>
+              <button class="gallery__like-button" aria-label="like"></button>
             </div>
           </li>
           <li class="gallery__card">
             <img class="gallery__photo" src="images/Карачаевск.png" alt="Гора Эльбрус">
             <div class="gallery__discript">
-              <p class="gallery__text">Карачаево-Черкесия</p>
-              <button class="gallery__like-button"></button>
+              <h2 class="gallery__text">Карачаево-Черкесия</h2>
+              <button class="gallery__like-button" aria-label="like"></button>
             </div>
           </li>
         </ul>
@@ -73,17 +72,18 @@
     <div class="popup"> <!-- Класс popup_opened добавляется JavaScript  -->
     <div class="popup__overlay"></div>
       <div class="popup__content">
-        <button class="popup__close-button" type="reset"></button>
+        <button class="popup__close-button" type="reset" aria-label="Close"></button>
         <h2 class="popup__title">Редактировать профиль</h2>
-        <form class="popup__form">
+        <form class="popup__form" name="edit-profile">
           <fieldset class="popup__form-discript">
-            <input type="text" class="popup__form-name" placeholder="" value="">
-            <input type="text" class="popup__form-about" placeholder="" value="">
-            <input class="popup__form-button" type="submit" value="Сохранить">
+            <input type="text" class="popup__input popup__input_value_name"  name="edit-profile-name" placeholder="" value="">
+            <input type="text" class="popup__input popup__input_value_job"  name="edit-profile-job" placeholder="" value="">
+            <button class="popup__form-button" type="submit">Сохранить</button>
           </fieldset>  
         </form>
       </div>
     </div>	
   </div>
+  <script src="scripts/index.js" defer></script>
 </body>
 </html>
