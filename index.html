@@ -21,55 +21,15 @@
       </section>
       <section class="gallery">
         <ul class="gallery__cards">
-          <li class="gallery__card">
-            <img class="gallery__photo" src="images/Карачаевск.png" alt="Гора Эльбрус">
-            <div class="gallery__discript">
-              <h2 class="gallery__text">Карачаевск</h2>
-              <button class="gallery__like-button" aria-label="like" type="button"></button>
-            </div>
-          </li>
-          <li class="gallery__card">
-            <img class="gallery__photo" src="images/ГораЭльбрус.png" alt="Гора Эльбрус">
-            <div class="gallery__discript">
-              <h2 class="gallery__text">Гора Эльбрус</h2>
-              <button class="gallery__like-button" aria-label="like" type="button"></button>
-            </div>
-          </li>
-          <li class="gallery__card">
-            <img class="gallery__photo" src="images/ГораЭльбрус.png" alt="Гора Эльбрус">
-            <div class="gallery__discript">
-              <h2 class="gallery__text">Домбай</h2>
-              <button class="gallery__like-button" aria-label="like" type="button"></button>
-            </div>
-          </li>
-          <li class="gallery__card">
-            <img class="gallery__photo" src="images/ГораЭльбрус.png" alt="Гора Эльбрус">
-            <div class="gallery__discript">
-              <h2 class="gallery__text">Гора Эльбрус</h2>
-              <button class="gallery__like-button" aria-label="like" type="button"></button>
-            </div>
-          </li>
-          <li class="gallery__card">
-            <img class="gallery__photo" src="images/ГораЭльбрус.png" alt="Гора Эльбрус">
-            <div class="gallery__discript">
-              <h2 class="gallery__text">Домбай</h2>
-              <button class="gallery__like-button" aria-label="like" type="button"></button>
-            </div>
-          </li>
-          <li class="gallery__card">
-            <img class="gallery__photo" src="images/Карачаевск.png" alt="Гора Эльбрус">
-            <div class="gallery__discript">
-              <h2 class="gallery__text">Карачаево-Черкесия</h2>
-              <button class="gallery__like-button" aria-label="like" type="button"></button>
-            </div>
-          </li>
+          <!-- Вставка темплейта -->
         </ul>
       </section>	  
     </main>
     <footer class="footer">
       <p class="footer__autor">© 2021 Mesto Russia</p>
     </footer>
-    <div class="popup"> <!-- Класс popup_opened добавляется JavaScript  -->
+
+    <div class="popup popup_edit_profile"> <!-- Класс popup_opened добавляется JavaScript  -->
     <div class="popup__overlay"></div>
       <div class="popup__content">
         <button class="popup__close-button" type="reset" aria-label="Close"></button>
@@ -82,7 +42,45 @@
           </fieldset>  
         </form>
       </div>
-    </div>	
+    </div>
+    
+    <div class="popup popup_add_card" > <!-- Класс popup_opened добавляется JavaScript  -->
+    <div class="popup__overlay"></div>
+      <div class="popup__content">
+        <button class="popup__close-button popup__close-button_card" type="reset" aria-label="Close"></button>
+        <h2 class="popup__title">Новое место</h2>
+        <form class="popup__form" name="edit-card">
+          <fieldset class="popup__form-discript">
+            <input type="text" class="popup__input popup__input_card_name"  name="edit-profile-name" placeholder="Название" value="" required>
+            <input type="text" class="popup__input popup__input_card_src"  name="edit-profile-job" placeholder="Ссылка на картинку" value="" required>
+            <button class="popup__form-button popup__form-button_add_card" type="submit">Создать</button>
+          </fieldset>  
+        </form>
+      </div>
+    </div>
+
+    <div class="popup popup_view_foto"> <!-- Класс popup_opened добавляется JavaScript  -->
+    <div class="popup__overlay popup__overlay_background_opacity"></div>
+      <div class="popup__content popup__content_view">
+        <button class="popup__close-button popup__close-button_view" type="reset" aria-label="Close"></button>
+        <figure class="popup__foto-content">
+          <img src="images/Карачаевск.png" alt="" class="popup__image">
+          <figcaption class="popup__caption"></figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <template class="template">
+      <li class="gallery__card">
+        <img class="gallery__photo" src="images/Карачаевск.png" alt="">
+        <button class="gallery__trash-button" aria-label="trash" type="button"></button>
+        <div class="gallery__discript">
+          <h2 class="gallery__text">Карачаевск</h2>
+          <button class="gallery__like-button" aria-label="like" type="button"></button>
+        </div>
+      </li>
+    </template> 
+
   </div>
   <script src="scripts/index.js" defer></script>
 </body>
