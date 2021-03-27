@@ -64,14 +64,14 @@ function formSubmitHandlerProfile(evt) {
 //Создаем функцию по получению данных из значений формы добавления карточки и их отправке
 function formSubmitHandlerCard(evt) {
   evt.preventDefault();
-  cardData (formCardSrc.value, formCardName.value, 'prepend');
+  galleryContainer.prepend(cardData(formCardSrc.value, formCardName.value))
   closePopup(popupCard);
   formCardElement.reset();
 }
 
 //-----------------------------------Функция создания карточки из шаблона-------------------------------------------------------
 
-function cardData (link, dsc, place) {
+function cardData (link, dsc,) {
   //находим контент шаблона
   const photoTemplate = document.querySelector('template').content;
   //клонируем контент шаблона
@@ -95,12 +95,8 @@ function cardData (link, dsc, place) {
     popupImage.src = link;
     popupCaption.textContent = dsc;
   });
-  //Выбираем куда будем добавлять карточку.
-  if (place) {
-    galleryContainer.prepend(photoElement);
-  } else {
-    galleryContainer.append(photoElement);
-  }
+  //"Возвращаем" полученую карточку.
+  return photoElement
 }
 
 //-----------------------------------Автозаполнение стартовых карточек в gallery-------------------------------------------------------
@@ -136,7 +132,7 @@ const initialCards = [
 //перебераем массив, записи данных из массива передаем в значения карточки шаблона
 //Карточки будут добавлены в начало, так как аргумент place к функции создания карточки не передается.
 initialCards.forEach(function (element) {
-    cardData (element.link, element.name)
+  galleryContainer.append(cardData(element.link, element.name));
 })
 
 //---------------------------------------Слушатели на кнопках и активация их действий------------------------------------------------
