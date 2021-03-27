@@ -1,6 +1,6 @@
 //------------------------------------------Выбираем эелементы DOM------------------------------------------------
 
-//Выберем popup 
+//popup 
 const popupProfile = document.querySelector(".popup_edit_profile");
 const popupCard = document.querySelector(".popup_add_card");
 const popupView = document.querySelector(".popup_view_foto");
@@ -14,29 +14,29 @@ const closePopupProfileBtn = document.querySelector(".popup__close-button");
 const closePopupCardBtn = document.querySelector(".popup__close-button_card");
 const closePopupViewBtn = document.querySelector(".popup__close-button_view");
 
-// Выберем кнопки сохрарнения
+//кнопки сохрарнения
 const saveProfileButton = document.querySelector(".popup__form-button");
 const saveCardButton = document.querySelector(".popup__form-button_add_card");
 
-// Выберем "формы"
+//"формы"
 const formProfileElement = document.querySelector("form[name=edit-profile]");
 const formCardElement = document.querySelector("form[name=edit-card]");
 
-// Выберем DOM .profile__name и .profile__discript
+//DOM .profile__name и .profile__discript
 const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__discript");
 
-//Выберем DOM input для  дальнейшего изменения значений формы и их передачу
+//DOM input для  дальнейшего изменения значений формы и их передачу
 const formName = document.querySelector(".popup__input_value_name");
 const formJob = document.querySelector(".popup__input_value_job");
 const formCardName = document.querySelector(".popup__input_card_name");
 const formCardSrc = document.querySelector(".popup__input_card_src");
 
-//выбираем поля картинки и описания в попапе просмотра картинок
+//поля картинки и описания в попапе просмотра картинок
 const popupImage = document.querySelector(".popup__image");
 const popupCaption = document.querySelector(".popup__caption");
 
-// Выберем DOM .gallery__cards куда будем вставлять наш temlate (.append)
+//DOM .gallery__cards куда будем вставлять наш temlate (.append)
 const galleryContainer = document.querySelector(".gallery__cards");
 
 //----------------------------------------Функции откртия, закртия popup--------------------------------------------------
@@ -72,8 +72,11 @@ function formSubmitHandlerCard(evt) {
 //-----------------------------------Функция создания карточки из шаблона-------------------------------------------------------
 
 function cardData (link, dsc, place) {
+  //находим контент шаблона
   const photoTemplate = document.querySelector('template').content;
+  //клонируем контент шаблона
   const photoElement = photoTemplate.querySelector('.gallery__card').cloneNode(true);
+  // вставляем значения из аргументов функции в клонируемый контент
   photoElement.querySelector('.gallery__photo').src = link;
   photoElement.querySelector('.gallery__text').textContent = dsc;
   photoElement.querySelector('.gallery__photo').alt = dsc;
@@ -131,7 +134,7 @@ const initialCards = [
 ]; 
 
 //перебераем массив, записи данных из массива передаем в значения карточки шаблона
-//Карточки будут добавлены в начало, так как парамерт place к функции создания карточки не передается.
+//Карточки будут добавлены в начало, так как аргумент place к функции создания карточки не передается.
 initialCards.forEach(function (element) {
     cardData (element.link, element.name)
 })
