@@ -39,6 +39,9 @@ const popupCaption = document.querySelector(".popup__caption");
 //DOM .gallery__cards куда будем вставлять наш temlate (.append)
 const galleryContainer = document.querySelector(".gallery__cards");
 
+//находим контент шаблона
+const photoTemplate = document.querySelector('template').content;
+
 //----------------------------------------Функции откртия, закртия popup--------------------------------------------------
 
 //Создаем универсальную функцию по открытию popup через ввод параметра (параметр - переменная класса)
@@ -51,10 +54,33 @@ function closePopup(item) {
   item.classList.remove("popup_opened");
 }
 
+//----------------------------------------Функции обработки событий карточки--------------------------------------------------
+
+//Создаем  функцию по вкл\выкл кнопки лайка
+function handleLike(evt) {
+  evt.target.classList.toggle('gallery__like-button_active');
+ } 
+
+ //Создаем  функцию удалению карточки
+ function dropObject (element) {
+  return function (e) {
+    element.remove();
+  }
+ }
+
+ //Делаем функцию по откртию попапа с картинкой при клике на картинку.
+ function openImageView(element) {
+   return function openImagePopup () {
+      openPopup(popupView);
+      popupImage.src = element.link;
+      popupCaption.textContent = element.name;
+ }
+}
+
 //----------------------------------------отправка формы--------------------------------------------------
 
 //Создаем функцию по получению данных из значений формы редактирования профайла и их отправке
-function formSubmitHandlerProfile(evt) {
+function handleProfileSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = formName.value;
   profileJob.textContent = formJob.value;
@@ -62,77 +88,46 @@ function formSubmitHandlerProfile(evt) {
 }
 
 //Создаем функцию по получению данных из значений формы добавления карточки и их отправке
-function formSubmitHandlerCard(evt) {
+function handleCardSubmit(evt) {
   evt.preventDefault();
-  galleryContainer.prepend(cardData(formCardSrc.value, formCardName.value))
+  const cardData = {
+    name: formCardName.value,
+    link: formCardSrc.value
+  }
+  galleryContainer.prepend(createCard(cardData))
   closePopup(popupCard);
   formCardElement.reset();
 }
 
 //-----------------------------------Функция создания карточки из шаблона-------------------------------------------------------
 
-function cardData (link, dsc,) {
-  //находим контент шаблона
-  const photoTemplate = document.querySelector('template').content;
+function createCard (cardData) {
   //клонируем контент шаблона
   const photoElement = photoTemplate.querySelector('.gallery__card').cloneNode(true);
-  // вставляем значения из аргументов функции в клонируемый контент
-  photoElement.querySelector('.gallery__photo').src = link;
-  photoElement.querySelector('.gallery__text').textContent = dsc;
-  photoElement.querySelector('.gallery__photo').alt = dsc;
+  //Выбираем элементы которые будем изменять
+  const galleryPhoto = photoElement.querySelector('.gallery__photo');
+  const galleryText = photoElement.querySelector('.gallery__text');
+  const galleryTrashButton = photoElement.querySelector('.gallery__trash-button');
+  const galleryLikeButton =  photoElement.querySelector('.gallery__like-button')
+  // вставляем значения из объекта - аргумента функции в клонируемый контент
+  galleryPhoto.src = cardData.link;
+  galleryText.textContent = cardData.name;
+  galleryPhoto.alt = cardData.name;
   //Делаем кнопку Like активной
-  photoElement.querySelector('.gallery__like-button').addEventListener('click', function (evt) {
-    evt.target.classList.toggle('gallery__like-button_active'); 
-  });
+  galleryLikeButton.addEventListener('click', handleLike);
   //Делаем кнопку Trash активной
-  photoElement.querySelector('.gallery__trash-button').addEventListener('click', function () {
-    const allCard = photoElement.querySelector('.gallery__trash-button').closest('.gallery__card');
-    allCard.remove(); 
-  });
+  galleryTrashButton.addEventListener('click', dropObject(photoElement)); 
   //Делаем картинку активной
-  photoElement.querySelector('.gallery__photo').addEventListener('click', function () {
-    openPopup(popupView);
-    popupImage.src = link;
-    popupCaption.textContent = dsc;
-  });
+  galleryPhoto.addEventListener('click', openImageView(cardData))
   //"Возвращаем" полученую карточку.
   return photoElement
 }
 
-//-----------------------------------Автозаполнение стартовых карточек в gallery-------------------------------------------------------
-
-//массив с данными
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-]; 
-
 //перебераем массив, записи данных из массива передаем в значения карточки шаблона
-//Карточки будут добавлены в начало, так как аргумент place к функции создания карточки не передается.
+//массив в отдельном файле.
+
 initialCards.forEach(function (element) {
-  galleryContainer.append(cardData(element.link, element.name));
+  galleryContainer.append(createCard(element));
 })
 
 //---------------------------------------Слушатели на кнопках и активация их действий------------------------------------------------
@@ -146,25 +141,17 @@ openPopupProfileBtn.addEventListener("click", function() {
 });
 
 //Вешаем слушатель на кнопку открытия popup для добавления фотографии
-openPopupCardBtn.addEventListener("click", function() {
-  openPopup(popupCard);
-});
+openPopupCardBtn.addEventListener("click", () => openPopup(popupCard)); 
 
 //Вешаем слушатель на кнопку креста popupProfile
-closePopupProfileBtn.addEventListener("click", function() {
-  closePopup(popupProfile);
-});
+closePopupProfileBtn.addEventListener("click", () => closePopup(popupProfile));
 
 //Вешаем слушатель на кнопку креста popupCard
-closePopupCardBtn.addEventListener("click", function() {
-  closePopup(popupCard);
-});
+closePopupCardBtn.addEventListener("click", () =>  closePopup(popupCard));
 
 //Вешаем слушатель на кнопку креста popupCard
-closePopupViewBtn.addEventListener("click", function() {
-  closePopup(popupView);
-});
+closePopupViewBtn.addEventListener("click", () => closePopup(popupView));
 
 //Вешаем слушатель на форму по действию submit (нажатие enter и\или click по конпке формы)
-formProfileElement.addEventListener("submit", formSubmitHandlerProfile);
-formCardElement.addEventListener("submit", formSubmitHandlerCard);
+formProfileElement.addEventListener("submit", handleProfileSubmit);
+formCardElement.addEventListener("submit", handleCardSubmit);
