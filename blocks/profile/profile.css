@@ -22,6 +22,6 @@
   .profile {
     margin: 42px 19px 36px;
     grid-template-columns: minmax(28px, 1fr) fit-content(100%) 1fr;
-    grid-template-rows: fit-content(100%) fit-content(100%) fit-content(100%);
+    grid-template-rows: fit-content(100%);
   }
 }  

@@ -63,10 +63,8 @@ function handleLike(evt) {
 
  //Создаем  функцию удалению карточки
  function dropObject (element) {
-  return function (e) {
     element.remove();
   }
- }
 
  //Делаем функцию по откртию попапа с картинкой при клике на картинку.
  function openImageView(element) {
@@ -116,7 +114,7 @@ function createCard (cardData) {
   //Делаем кнопку Like активной
   galleryLikeButton.addEventListener('click', handleLike);
   //Делаем кнопку Trash активной
-  galleryTrashButton.addEventListener('click', dropObject(photoElement)); 
+  galleryTrashButton.addEventListener('click', () => dropObject(photoElement)); 
   //Делаем картинку активной
   galleryPhoto.addEventListener('click', openImageView(cardData))
   //"Возвращаем" полученую карточку.
