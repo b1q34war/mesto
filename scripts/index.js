@@ -53,21 +53,26 @@ const photoTemplate = document.querySelector('template').content;
 //(keyup, так как по себе знаю, иногда желательно подержать открытое окошко
 //чекнуть данные, которые навводил
 
-//Функция открытия попапа 
+//Функция открытия попапа и вешаем слушатель кнопки esc
 function openPopup(item) {
   item.classList.add("popup_opened");
-  function closePopupOnEsc(event) {
-    if (event.key === "Escape") {
-      closePopup(item);
-      window.removeEventListener('keyup', closePopupOnEsc) 
-    }
-  }
-  window.addEventListener('keyup', closePopupOnEsc);
+  window.addEventListener('keyup', closePopupOnEsc)
 }
 
-//Создаем универсальную функцию по закртию popup через ввод параметра (параметр - переменная класса)
-function closePopup(item) {
-  item.classList.remove("popup_opened");
+//Функция закрытия попапа при нажатии esc и снятия листнера
+function closePopupOnEsc(event) {
+  if (event.key === "Escape") {
+    const openedPopup = document.querySelector('.popup_opened')
+    closePopup(openedPopup);
+    window.removeEventListener('keyup', closePopupOnEsc) 
+  }
+}
+
+//Создаем универсальную функцию по закртию popup и снимаем листнер клавиши esc
+const closePopup = () => {
+  const openedPopup = document.querySelector('.popup_opened')
+  openedPopup.classList.remove("popup_opened");
+  window.removeEventListener('keyup', closePopupOnEsc)
 }
 
 //----------------------------------------Функции обработки событий карточки--------------------------------------------------
@@ -100,7 +105,7 @@ function handleLike(evt) {
 function handleProfileSubmit(evt) {
   profileName.textContent = formName.value;
   profileJob.textContent = formJob.value;
-  closePopup(popupProfile);
+  closePopup();
 }
 
 //Создаем функцию по получению данных из значений формы добавления карточки и их отправке
@@ -110,7 +115,7 @@ function handleCardSubmit(evt) {
     link: formCardSrc.value
   }
   galleryContainer.prepend(createCard(cardData))
-  closePopup(popupCard);
+  closePopup();
   saveCardButton.classList.add('popup__form-button_inactive');
   saveCardButton.setAttribute('disabled', true);
   formCardElement.reset();
@@ -185,18 +190,18 @@ openPopupProfileBtn.addEventListener("click", function() {
 openPopupCardBtn.addEventListener("click", () => openPopup(popupCard)); 
 
 //Вешаем слушатель на кнопку креста popupProfile
-closePopupProfileBtn.addEventListener("click", () => closePopup(popupProfile));
+closePopupProfileBtn.addEventListener("click", closePopup);
 
 //Вешаем слушатель на кнопку креста popupCard
-closePopupCardBtn.addEventListener("click", () =>  closePopup(popupCard));
+closePopupCardBtn.addEventListener("click", closePopup);
 
 //Вешаем слушатель на кнопку креста popupCard
-closePopupViewBtn.addEventListener("click", () => closePopup(popupView));
+closePopupViewBtn.addEventListener("click", closePopup);
 
 //Вешаем слушатель на закрытие Popup при клике на overlay разных попапов.
-popupOverlayProfile.addEventListener("click", () => closePopup(popupProfile));
-popupOverlayAddCard.addEventListener("click", () => closePopup(popupCard));
-popupOverlayViewFoto.addEventListener("click", () => closePopup(popupView));
+popupOverlayProfile.addEventListener("click", closePopup);
+popupOverlayAddCard.addEventListener("click", closePopup);
+popupOverlayViewFoto.addEventListener("click", closePopup);
 
 //Вешаем слушатель на форму по действию submit (нажатие enter и\или click по конпке формы)
 formProfileElement.addEventListener("submit", handleProfileSubmit);
