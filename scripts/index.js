@@ -4,6 +4,10 @@
 const popupProfile = document.querySelector(".popup_edit_profile");
 const popupCard = document.querySelector(".popup_add_card");
 const popupView = document.querySelector(".popup_view_foto");
+//popup__overlay
+const popupOverlayProfile = document.querySelector(".popup__overlay-profile");
+const popupOverlayAddCard = document.querySelector(".popup__overlay-add-card");
+const popupOverlayViewFoto = document.querySelector(".popup__overlay-view-foto");
 
 //кнопки для открытия popup
 const openPopupProfileBtn = document.querySelector(".profile__edit-button");
@@ -45,8 +49,20 @@ const photoTemplate = document.querySelector('template').content;
 //----------------------------------------Функции откртия, закртия popup--------------------------------------------------
 
 //Создаем универсальную функцию по открытию popup через ввод параметра (параметр - переменная класса)
+//Добаим обработчк событий (закрытие) на клавишу Escape для открытого попапа.
+//(keyup, так как по себе знаю, иногда желательно подержать открытое окошко
+//чекнуть данные, которые навводил
+
+//Функция открытия попапа 
 function openPopup(item) {
   item.classList.add("popup_opened");
+  function closePopupOnEsc(event) {
+    if (event.key === "Escape") {
+      closePopup(item);
+      window.removeEventListener('keyup', closePopupOnEsc) 
+    }
+  }
+  window.addEventListener('keyup', closePopupOnEsc);
 }
 
 //Создаем универсальную функцию по закртию popup через ввод параметра (параметр - переменная класса)
@@ -69,17 +85,19 @@ function handleLike(evt) {
  //Делаем функцию по откртию попапа с картинкой при клике на картинку.
  function openImageView(element) {
    return function openImagePopup () {
-      openPopup(popupView);
       popupImage.src = element.link;
       popupCaption.textContent = element.name;
+      openPopup(popupView);
  }
 }
 
 //----------------------------------------отправка формы--------------------------------------------------
 
 //Создаем функцию по получению данных из значений формы редактирования профайла и их отправке
+//  evt.preventDefault(); - убрал, так как теперь обнуление стандартного поведения есть в 
+//в setInputListners 
+
 function handleProfileSubmit(evt) {
-  evt.preventDefault();
   profileName.textContent = formName.value;
   profileJob.textContent = formJob.value;
   closePopup(popupProfile);
@@ -87,19 +105,20 @@ function handleProfileSubmit(evt) {
 
 //Создаем функцию по получению данных из значений формы добавления карточки и их отправке
 function handleCardSubmit(evt) {
-  evt.preventDefault();
   const cardData = {
     name: formCardName.value,
     link: formCardSrc.value
   }
   galleryContainer.prepend(createCard(cardData))
   closePopup(popupCard);
+  saveCardButton.classList.add('popup__form-button_inactive');
+  saveCardButton.setAttribute('disabled', true);
   formCardElement.reset();
 }
 
 //-----------------------------------Функция создания карточки из шаблона-------------------------------------------------------
 
-function createCard (cardData) {
+function createCard(cardData) {
   //клонируем контент шаблона
   const photoElement = photoTemplate.querySelector('.gallery__card').cloneNode(true);
   //Выбираем элементы которые будем изменять
@@ -128,14 +147,38 @@ initialCards.forEach(function (element) {
   galleryContainer.append(createCard(element));
 })
 
-//---------------------------------------Слушатели на кнопках и активация их действий------------------------------------------------
+//---------------------------------------подготовка попапа профайла к откртию------------------------------------------------
+/* Я открываю попап редактирования профайла, (все ок).
+далее начинаю редактировать форму.
+любой импут формы довожу до состояния ошибки. (функция проверки отрабатывает на ура, все ок.)
+закрываю попап крестом, ескейпом или кликом по оверлею.
+открывю попап - данные в значения импутов передались, евента импута от юзера при этом не было.
+ипуты хоть и заполнены, но горят красным....
+ */
+//для устранения этой проблемы - создаим функцию проверки импутов и повесим ее на каждое открытие попапа.
+//передадим состояние кнопки сохранения.
+//универсально не повесим иначе попап с добавлением карточки, будет сразу ругатся на пустые поля.
 
+const checkProfileImput = ()  => {
+  const inputList = Array.from(formProfileElement.querySelectorAll('.popup__input'));
+  inputList.forEach((inputElement) => {
+    const errorElement = formProfileElement.querySelector(`#${inputElement.id}-error`);
+    inputElement.classList.remove('popup__input_error');
+    errorElement.classList.remove('popup__form-message-error_active');
+    saveProfileButton.classList.remove('popup__form-button_inactive');
+    saveProfileButton.removeAttribute('disabled');
+  });
+}
+
+//---------------------------------------Слушатели на кнопках и активация их действий------------------------------------------------
 //Вешаем слушатель на кнопку открытия popup для редактирования профайла
 //передаем функцию с параметрами.
+
 openPopupProfileBtn.addEventListener("click", function() {
-  openPopup(popupProfile);
+  checkProfileImput();
   formName.value = profileName.textContent;
   formJob.value = profileJob.textContent;
+  openPopup(popupProfile);
 });
 
 //Вешаем слушатель на кнопку открытия popup для добавления фотографии
@@ -149,6 +192,11 @@ closePopupCardBtn.addEventListener("click", () =>  closePopup(popupCard));
 
 //Вешаем слушатель на кнопку креста popupCard
 closePopupViewBtn.addEventListener("click", () => closePopup(popupView));
+
+//Вешаем слушатель на закрытие Popup при клике на overlay разных попапов.
+popupOverlayProfile.addEventListener("click", () => closePopup(popupProfile));
+popupOverlayAddCard.addEventListener("click", () => closePopup(popupCard));
+popupOverlayViewFoto.addEventListener("click", () => closePopup(popupView));
 
 //Вешаем слушатель на форму по действию submit (нажатие enter и\или click по конпке формы)
 formProfileElement.addEventListener("submit", handleProfileSubmit);

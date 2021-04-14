@@ -21,7 +21,7 @@
       </section>
       <section class="gallery">
         <ul class="gallery__cards">
-          <!-- Вставка темплейта -->
+          <!-- Вставка темплейта card-->
         </ul>
       </section>	  
     </main>
@@ -30,14 +30,16 @@
     </footer>
 
     <div class="popup popup_edit_profile"> <!-- Класс popup_opened добавляется JavaScript  -->
-    <div class="popup__overlay"></div>
+    <div class="popup__overlay popup__overlay-profile"></div>
       <div class="popup__content">
         <button class="popup__close-button" type="reset" aria-label="Close"></button>
         <h2 class="popup__title">Редактировать профиль</h2>
-        <form class="popup__form" name="edit-profile">
+        <form class="popup__form" name="edit-profile" novalidate autocomplete="off">
           <fieldset class="popup__form-discript">
-            <input type="text" class="popup__input popup__input_value_name"  name="edit-profile-name" placeholder="" value="">
-            <input type="text" class="popup__input popup__input_value_job"  name="edit-profile-job" placeholder="" value="">
+            <input type="text" class="popup__input popup__input_value_name" id="input_value_name"  name="edit-profile-name" placeholder="" value="name" required minlength="2" maxlength="40">
+            <span class="popup__form-message-error popup__form-message-error_position_under-first-input" id="input_value_name-error"></span>
+            <input type="text" class="popup__input popup__input_value_job"  id="input_value_job" name="edit-profile-job" placeholder="" value="job" required minlength="2" maxlength="200">
+            <span class="popup__form-message-error popup__form-message-error_position_under-second-input" id="input_value_job-error"></span>
             <button class="popup__form-button" type="submit">Сохранить</button>
           </fieldset>  
         </form>
@@ -45,14 +47,16 @@
     </div>
     
     <div class="popup popup_add_card" > <!-- Класс popup_opened добавляется JavaScript  -->
-    <div class="popup__overlay"></div>
+    <div class="popup__overlay popup__overlay-add-card"></div>
       <div class="popup__content">
         <button class="popup__close-button popup__close-button_card" type="reset" aria-label="Close"></button>
         <h2 class="popup__title">Новое место</h2>
-        <form class="popup__form" name="edit-card">
+        <form class="popup__form" name="edit-card" novalidate autocomplete="off">
           <fieldset class="popup__form-discript">
-            <input type="text" class="popup__input popup__input_card_name"  name="edit-profile-name" placeholder="Название" value="" required>
-            <input type="text" class="popup__input popup__input_card_src"  name="edit-profile-job" placeholder="Ссылка на картинку" value="" required>
+            <input type="text" class="popup__input popup__input_card_name" id="input_card_name" name="edit-card-name" placeholder="Название" value="" required minlength="2" maxlength="40">
+            <span class="popup__form-message-error popup__form-message-error_position_under-first-input" id="input_card_name-error"></span>
+            <input type="url" class="popup__input popup__input_card_src" id="input_card_src" name="edit-card-link" placeholder="Ссылка на картинку" value="" required>
+            <span class="popup__form-message-error popup__form-message-error_position_under-second-input" id="input_card_src-error"></span>
             <button class="popup__form-button popup__form-button_add_card" type="submit">Создать</button>
           </fieldset>  
         </form>
@@ -60,7 +64,7 @@
     </div>
 
     <div class="popup popup_view_foto"> <!-- Класс popup_opened добавляется JavaScript  -->
-    <div class="popup__overlay popup__overlay_background_opacity"></div>
+    <div class="popup__overlay popup__overlay_background_opacity popup__overlay-view-foto"></div>
       <div class="popup__content popup__content_view">
         <button class="popup__close-button popup__close-button_view" type="reset" aria-label="Close"></button>
         <figure class="popup__foto-content">
@@ -83,6 +87,7 @@
 
   </div>
   <script src="scripts/initial-сards.js"></script>
+  <script src="scripts/validate.js"></script>
   <script src="scripts/index.js"></script>
 </body>
 </html>

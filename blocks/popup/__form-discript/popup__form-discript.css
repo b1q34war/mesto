@@ -1,4 +1,5 @@
 .popup__form-discript {
+  position: relative;
   padding: 0;
   margin: 0 auto;
   border: none;
