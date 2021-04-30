@@ -1,5 +1,5 @@
 import  Card from  './Card.js';
-import  FormValidation from './FormValidator.js'
+import  FormValidatior from './FormValidator.js'
 
 export {openPopup, popupView};
 
@@ -111,7 +111,7 @@ const config = {
 
   //Для каждой формы врубаем валидацию - дерагем (ручку) метод класса по включению валидации
 formList.forEach((element) => {
-  const formValidator = new FormValidation(config, element);
+  const formValidator = new FormValidatior(config, element);
   formValidator.enableValidation();
 }
 )
