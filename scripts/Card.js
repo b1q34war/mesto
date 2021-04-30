@@ -4,20 +4,18 @@ import {openPopup, popupView} from './index.js';
 
 
 export default class Card {
-    constructor(cardData, template) {
+    constructor(cardData, templateSelector) {
       this._cardData = cardData; //Параметры для карточки
-      this._template = template //шаблон
+      this._templateSelector = templateSelector //шаблон
       this._popupImage = document.querySelector(".popup__image");//картинка в попапе
       this._popupCaption = document.querySelector(".popup__caption");//подпись картинки в попапе
       this._element = this._cloneElement(); //Запишем полученный шаблон в переменную, дабы потом разово селектить нужные объекты.
       this._prepareChilds();//теперь класс знает об переменных внутри _prepareChilds 
-      this._makeElement(); //вернули измененный шаблон.
-      this._makeEventListners();
     }
   
     //Клонируем теплейт
   _cloneElement () {
-    this._cloneElement = document.querySelector(this._template).content.firstElementChild.cloneNode(true);
+    this._cloneElement = document.querySelector(this._templateSelector).content.firstElementChild.cloneNode(true);
     return this._cloneElement;
     } 
   
@@ -63,6 +61,8 @@ export default class Card {
   
     //делаем достпный из вне метод с готовой и сгенерированной карточкой 
   renderCard () {
+    this._makeElement(); //вернули измененный шаблон.
+    this._makeEventListners();//Навесели слушаетелей.
     return this._element;
     }
   }
