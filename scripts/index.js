@@ -1,3 +1,8 @@
+import  Card from  './Card.js';
+import  FormValidation from './FormValidator.js'
+
+export {openPopup, popupView};
+
 //------------------------------------------Выбираем эелементы DOM------------------------------------------------
 
 //popup 
@@ -25,6 +30,9 @@ const saveCardButton = document.querySelector(".popup__form-button_add_card");
 //"формы"
 const formProfileElement = document.querySelector("form[name=edit-profile]");
 const formCardElement = document.querySelector("form[name=edit-card]");
+const forms = document.querySelectorAll('.popup__form',);
+  //массив из форм
+const formList = Array.from(forms);
 
 //DOM .profile__name и .profile__discript
 const profileName = document.querySelector(".profile__name");
@@ -36,15 +44,9 @@ const formJob = document.querySelector(".popup__input_value_job");
 const formCardName = document.querySelector(".popup__input_card_name");
 const formCardSrc = document.querySelector(".popup__input_card_src");
 
-//поля картинки и описания в попапе просмотра картинок
-const popupImage = document.querySelector(".popup__image");
-const popupCaption = document.querySelector(".popup__caption");
-
 //DOM .gallery__cards куда будем вставлять наш temlate (.append)
 const galleryContainer = document.querySelector(".gallery__cards");
 
-//находим контент шаблона
-const photoTemplate = document.querySelector('template').content;
 
 //----------------------------------------Функции откртия, закртия popup--------------------------------------------------
 
@@ -75,32 +77,8 @@ const closePopup = () => {
   window.removeEventListener('keyup', closePopupOnEsc)
 }
 
-//----------------------------------------Функции обработки событий карточки--------------------------------------------------
+//----------------------------------------отправка формы и валидация------------------------------------------------
 
-//Создаем  функцию по вкл\выкл кнопки лайка
-function handleLike(evt) {
-  evt.target.classList.toggle('gallery__like-button_active');
- } 
-
- //Создаем  функцию удалению карточки
- function dropObject (element) {
-    element.remove();
-  }
-
- //Делаем функцию по откртию попапа с картинкой при клике на картинку.
- function openImageView(element) {
-   return function openImagePopup () {
-      popupImage.src = element.link;
-      popupCaption.textContent = element.name;
-      openPopup(popupView);
- }
-}
-
-//----------------------------------------отправка формы--------------------------------------------------
-
-//Создаем функцию по получению данных из значений формы редактирования профайла и их отправке
-//  evt.preventDefault(); - убрал, так как теперь обнуление стандартного поведения есть в 
-//в setInputListners 
 
 function handleProfileSubmit(evt) {
   profileName.textContent = formName.value;
@@ -114,42 +92,69 @@ function handleCardSubmit(evt) {
     name: formCardName.value,
     link: formCardSrc.value
   }
-  galleryContainer.prepend(createCard(cardData))
+  galleryContainer.prepend(crateCard(cardData, '#card_template'));
   closePopup();
   saveCardButton.classList.add('popup__form-button_inactive');
   saveCardButton.setAttribute('disabled', true);
   formCardElement.reset();
 }
 
-//-----------------------------------Функция создания карточки из шаблона-------------------------------------------------------
-
-function createCard(cardData) {
-  //клонируем контент шаблона
-  const photoElement = photoTemplate.querySelector('.gallery__card').cloneNode(true);
-  //Выбираем элементы которые будем изменять
-  const galleryPhoto = photoElement.querySelector('.gallery__photo');
-  const galleryText = photoElement.querySelector('.gallery__text');
-  const galleryTrashButton = photoElement.querySelector('.gallery__trash-button');
-  const galleryLikeButton =  photoElement.querySelector('.gallery__like-button')
-  // вставляем значения из объекта - аргумента функции в клонируемый контент
-  galleryPhoto.src = cardData.link;
-  galleryText.textContent = cardData.name;
-  galleryPhoto.alt = cardData.name;
-  //Делаем кнопку Like активной
-  galleryLikeButton.addEventListener('click', handleLike);
-  //Делаем кнопку Trash активной
-  galleryTrashButton.addEventListener('click', () => dropObject(photoElement)); 
-  //Делаем картинку активной
-  galleryPhoto.addEventListener('click', openImageView(cardData))
-  //"Возвращаем" полученую карточку.
-  return photoElement
+//конфиг для валидации формы
+const config = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__form-button',
+  inactiveButtonClass: 'popup__form-button_inactive',
+  inputErrorClass: 'popup__input_error',
+  errorClass: 'popup__form-message-error_active'
 }
 
-//перебераем массив, записи данных из массива передаем в значения карточки шаблона
-//массив в отдельном файле.
+  //Для каждой формы врубаем валидацию - дерагем (ручку) метод класса по включению валидации
+formList.forEach((element) => {
+  const formValidator = new FormValidation(config, element);
+  formValidator.enableValidation();
+}
+)
+
+//---------------------------------------------------------карточки ------------------------------------------------
+
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+]; 
+
+// функция по созданию карточки которая дергает метод из класса по созданию картчоки
+function crateCard (cardData, template) {
+  const card = new Card (cardData, template);
+  return card.renderCard();
+}
+
+//Обойдем массив с данными для создания карточек при закгрузке страницы
 
 initialCards.forEach(function (element) {
-  galleryContainer.append(createCard(element));
+  galleryContainer.append(crateCard(element, '#card_template'));
 })
 
 //---------------------------------------подготовка попапа профайла к откртию------------------------------------------------
